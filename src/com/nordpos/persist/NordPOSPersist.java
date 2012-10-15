@@ -5,6 +5,8 @@
 package com.nordpos.persist;
 
 import java.sql.Connection;
+import java.util.List;
+import java.util.Map;
 import net.sf.persist.Persist;
 import org.apache.log4j.Logger;
 
@@ -44,6 +46,12 @@ public class NordPOSPersist {
         System.out.println(validUser.getId());
 
         System.out.println(findUser("Nord", "nord").getVisible().toString());
+
+        List Customers = findCustomer();
+
+        for (int i = 0; i < Customers.size(); i++) {
+            System.out.println(((Customer) Customers.get(i)).getName());
+        }
     }
 
     public static People findUser(String login, String password) {
@@ -57,5 +65,11 @@ public class NordPOSPersist {
         }
 
         return validUser;
+    }
+
+    public static List<Customer> findCustomer() {
+        persist = new Persist(ConnectionInstance.getConIsntance());
+        List<Customer> customers = persist.readList(Customer.class, "SELECT * FROM CUSTOMERS");
+        return customers;
     }
 }
